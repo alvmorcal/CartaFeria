@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>XI Feria de la Cerveza Internacional – Sanlúcar la Mayor (2025)</title>
+  <style>
+
+    :root{--bg:#0f0f10;--card:#18191b;--soft:#232427;--text:#f6f6f7;--muted:#c7c8cc;--brand:#f5b301;--accent:#c62828}
+    *{box-sizing:border-box}
+    html,body{margin:0;background:linear-gradient(180deg,#0d0d0e,#121315 60%,#0d0d0e);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    .container{width:min(1100px,92vw);margin:auto}
+    .topbar{position:sticky;top:0;z-index:20;background:rgba(15,15,16,.8);backdrop-filter:blur(8px);border-bottom:1px solid #232428}
+    nav.nav{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0}
+    .brand{display:flex;gap:10px;align-items:center}
+    .brand .logo{width:36px;height:36px;border-radius:10px;background:conic-gradient(from 0deg, var(--brand), #ffe08a, var(--brand));box-shadow:0 0 0 2px #2a2a2d inset}
+    .brand h1{font-size:16px;margin:0;font-weight:700}
+    .nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px}
+    .nav a:hover{background:#1e1f22;color:var(--text)}
+    header.hero{padding:64px 0 40px;border-bottom:1px solid #242527;background:radial-gradient(1200px 600px at 70% -10%, rgba(245,179,1,.15), transparent), radial-gradient(900px 420px at 0% -10%, rgba(198,40,40,.12), transparent)}
+    h2.section-title{font-size:clamp(24px,2.6vw,34px);margin:0 0 14px}
+    p.lead{color:var(--muted);font-size:18px;line-height:1.6}
+    .tag{display:inline-block;padding:6px 10px;border:1px solid #2b2c30;border-radius:999px;color:var(--muted);font-size:12px}
+    .grid{display:grid;gap:16px}
+    .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width:900px){.grid.cols-3{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:680px){.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}}
+    .card{background:var(--card);border:1px solid #26272b;border-radius:16px;padding:16px}
+    .card h3{margin:0 0 6px;font-size:18px}
+    .card p{margin:0;color:var(--muted);line-height:1.55}
+    .price{margin-left:auto;font-weight:800;color:var(--brand)}
+    .item{display:flex;gap:12px}
+    .list .row{display:flex;gap:12px;align-items:start;padding:12px;border-bottom:1px solid #24262a}
+    .list .row:last-child{border-bottom:none}
+    .badge{padding:2px 8px;border-radius:8px;background:#212226;border:1px solid #2b2c30;color:#a5a8b1;font-size:11px}
+    .divider{height:1px;background:#25262a;margin:26px 0}
+    .notice{padding:12px 14px;border:1px dashed #5b2b2b;border-radius:12px;background:linear-gradient(180deg,#1c1212,#1a1111);color:#ffbdbd}
+    .notice strong{color:#ffd7d7}
+    .img-slot{height:160px;border:1px dashed #2b2c30;border-radius:12px;margin:8px 0 14px;display:flex;align-items:center;justify-content:center;color:#8f939c}
+    .beer-slot{height:140px;border:1px dashed #38393e;border-radius:12px;margin:0;display:flex;align-items:center;justify-content:center;color:#a4a7ae;background:#1a1b1f}
+
+    /* NUEVO: layout para las tarjetas de cerveza (imagen izq, texto der) */
+    .beer{display:grid;grid-template-columns:160px 1fr;gap:12px;align-items:start}
+    @media (max-width:680px){.beer{grid-template-columns:1fr}}
+    footer{margin-top:48px;padding:36px 0;border-top:1px solid #26272b;color:#a2a4aa}
+    .small{font-size:12px;color:#9a9da5}
+
+    /* Layout imagen izq / texto der para cada cerveza */
+    .beer{display:grid;grid-template-columns:160px 1fr;gap:12px;align-items:start}
+    @media (max-width:680px){.beer{grid-template-columns:1fr}}
+
+    .beer-photo{
+      width:100%;
+      height:160px;          /* alto fijo para que no “baile” */
+      object-fit:fill;
+      border-radius:12px;
+      border:1px solid #38393e;
+      background:#1a1b1f;    /* color de fondo mientras carga */
+      display:block;
+    }
+    .beer-copy .meta{
+      display:flex; gap:8px; flex-wrap:wrap;
+      color:#a5a8b1; font-size:12px;
+    }
+  /* === Carrusel (sección "Quiénes somos") === */
+.carousel{position:relative;border:1px solid #26272b;border-radius:16px;overflow:hidden;background:#111}
+.carousel .c-track{display:flex;transition:transform .5s ease;will-change:transform}
+.carousel .c-slide{min-width:100%;height:360px;object-fit:cover;display:block}
+@media (min-width:900px){.carousel .c-slide{height:520px}}
+
+.c-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.35);border:1px solid #2b2c30;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;cursor:pointer;z-index:2;}
+.c-btn:hover{background:rgba(0,0,0,.55)}
+.c-btn.prev{left:8px}
+.c-btn.next{right:8px}
+.c-dots{position:absolute;bottom:8px;left:0;right:0;display:flex;gap:6px;justify-content:center}
+.c-dots button{width:8px;height:8px;border-radius:999px;border:1px solid #2b2c30;background:#1c1d20;opacity:.6}
+.c-dots button[aria-current="true"]{opacity:1;background:var(--brand)}
+
+
+
+    /* === Social icons (Contacto) === */
+    .social{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .social a{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:42px;height:42px;border-radius:999px;
+      border:1px solid #2b2c30;background:#151618;color:#e9e9ea;
+      text-decoration:none;transition:transform .15s ease,background .2s ease,border-color .2s ease,color .2s ease;
+    }
+    .social a:hover,.social a:focus-visible{transform:translateY(-2px);background:#1b1c20;border-color:#3a3b40;outline:none}
+    .social a svg{width:22px;height:22px;display:block;stroke:currentColor}
+    .social a.instagram:hover{color:#E4405F}
+    .social a.facebook:hover{color:#1877F2}
+    .social a.twitter:hover{color:#ffffff}
+    .social a.email:hover{color:var(--brand)}
+/* Extra spacing between social icons and the recordatorio in Contacto */
+#final .social{ margin-bottom: 16px; }
+@media (max-width:680px){
+  #final .social{ margin-bottom: 20px; }
+}
+
+/* === Mapa incrustado (Información) === */
+.map-embed{
+  position:relative;
+  width:100%;
+  aspect-ratio: 4 / 3;
+  border:1px solid #2b2c30;
+  border-radius:12px;
+  overflow:hidden;
+  background:#111;
+}
+.map-embed iframe{
+  position:absolute; inset:0;
+  width:100%; height:100%; border:0;
+}
+@media (max-width:680px){
+  .map-embed{ aspect-ratio: 4 / 3; }
+}
+
+@media (min-width:900px){.map-embed{height:220px;aspect-ratio:auto}}
+</style>
+<style id="mobile-fixes-v4">
+
+/* === Ajustes generales de escritorio (>=681px) === */
+@media (min-width: 681px){
+  /* Reducir un poco el espacio del encabezado */
+  header.hero{ padding:48px 0 32px !important; }
+}
+
+/* === Solo móvil (<=680px) === */
+@media (max-width: 680px){
+  /* Carruseles 16:9 solo en móvil */
+  .carousel{ aspect-ratio:16/9; max-height:70vh; }
+  .carousel .c-track{ height:100%; }
+  .carousel .c-slide{ height:100% !important; min-width:100%; object-fit:cover; }
+  @supports not (aspect-ratio:1){
+    .carousel{ position:relative; }
+    .carousel::before{ content:""; display:block; padding-top:56.25%; }
+    .carousel > *:not(.c-btn){ position:absolute; inset:0; }
+  }
+
+  /* Fichas de cerveza: imagen izq + texto der en móvil */
+  .beer{
+    display:grid;
+    grid-template-columns: 120px 1fr;
+    gap:12px;
+    align-items:start;
+  }
+
+  /* Recuadro fijo y limpio para las imágenes de cerveza (como en escritorio) */
+  .beer-photo{
+    width:100%;
+    height:130px;                 /* recuadro fijo en móvil */
+    object-fit:cover;             /* ajusta la imagen al recuadro sin franjas */
+    background:transparent !important;
+    border:none !important;
+    border-radius:12px !important;/* bordes redondeados en móvil */
+    display:block;
+  }
+
+  /* Reducir espacio en el hero también en móvil */
+  header.hero{ padding:28px 0 22px !important; }
+  header.hero .section-title{ margin-top:8px !important; }
+
+  /* Menú hamburguesa en móvil */
+  .topbar nav.nav{ position:relative; }
+  .topbar nav.nav > .nav{ display:none; }
+  .topbar nav.nav .hamburger{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:40px; height:40px;
+    border:1px solid #2a2a2d; border-radius:10px;
+    background:#151618;
+    cursor:pointer;
+  }
+  .topbar nav.nav .hamburger .bars,
+  .topbar nav.nav .hamburger .bars::before,
+  .topbar nav.nav .hamburger .bars::after{
+    content:"";
+    display:block;
+    width:20px; height:2px;
+    background:#e9e9ea;
+    border-radius:2px;
+    transition:transform .25s ease, opacity .25s ease;
+  }
+  .topbar nav.nav .hamburger .bars{ position:relative; }
+  .topbar nav.nav .hamburger .bars::before{ position:absolute; top:-6px; left:0; }
+  .topbar nav.nav .hamburger .bars::after{ position:absolute; top:6px; left:0; }
+
+  /* Panel del menú desplegable */
+  .topbar nav.nav.menu-open > .nav{
+    display:block;
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    background:#121315;
+    border:1px solid #232428;
+    border-radius:12px;
+    padding:8px;
+    box-shadow:0 12px 24px rgba(0,0,0,.35);
+    min-width:200px;
+  }
+  .topbar nav.nav.menu-open > .nav a{
+    display:block;
+    padding:10px 12px;
+    border-radius:8px;
+  }
+
+  /* Animación del icono en estado abierto */
+  .topbar nav.nav.menu-open .hamburger .bars{ transform:rotate(45deg); }
+  .topbar nav.nav.menu-open .hamburger .bars::before{ transform:rotate(90deg); top:0; }
+  .topbar nav.nav.menu-open .hamburger .bars::after{ opacity:0; }
+}
+/* === Fin solo móvil === */
+
+/* Ocultar el botón en escritorio (enlaces visibles como siempre) */
+@media (min-width: 681px){
+  .topbar nav.nav .hamburger{ display:none; }
+}
+
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <nav class="nav">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <h1>XI Feria de la Cerveza Internacional</h1>
+        </div>
+        <div class="nav">
+          <a href="#quienes">Quiénes somos</a>
+          <a href="#info">Información</a>
+          <a href="#carta">Carta 2025</a>
+          <a href="#final">Contacto</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="container">
+      <span class="tag">Sanlúcar la Mayor · XI Edición (2025)</span>
+      <h2 class="section-title" style="font-size:clamp(30px,4.2vw,56px);margin-top:12px">XI Feria de la Cerveza Internacional</h2>
+      <div class="carousel" id="evento-carousel" aria-label="Encabezado del evento">
+  <button class="c-btn prev" aria-label="Anterior">‹</button>
+  <div class="c-track"></div>
+  <button class="c-btn next" aria-label="Siguiente">›</button>
+  <div class="c-dots" aria-label="Indicadores"></div>
+</div>
+      <p class="lead">Bienvenido/a a la carta digital oficial del evento. Explora nuestra selección de cervezas internacionales y tapas, además de bebidas para todos los gustos.</p>
+      <div class="notice" style="margin-top:12px"><strong>Importante:</strong> Prohibida la venta de alcohol a menores. La organización, Heineken y sus marcas recomiendan el consumo responsable de alcohol.</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- QUIÉNES SOMOS -->
+    <section id="quienes" style="margin:32px 0 12px">
+      <h2 class="section-title">¿Quiénes somos?</h2>
+      <div class="carousel" id="recinto-carousel" aria-label="Galería del recinto y público">
+  <button class="c-btn prev" aria-label="Anterior">‹</button>
+  <div class="c-track"></div>
+  <button class="c-btn next" aria-label="Siguiente">›</button>
+  <div class="c-dots" aria-label="Indicadores"></div>
+</div>
+      <p class="lead">La Hermandad de la Soledad de Sanlúcar la Mayor organiza la XI Edición de la Feria de la Cerveza Internacional. Como cada año, un amplísimo equipo formado por voluntarios pone todo su esfuerzo y dedicación para el disfrute de todo aquel que desee visitarnos.</p>
+    </section>
+
+    <!-- INFORMACIÓN ESPECIAL -->
+    <section id="info" style="margin:24px 0">
+      <h2 class="section-title">Información</h2>
+      <div class="img-slot">(Espacio para foto de la tómbola / detalle de mostrador)</div>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>🎟️ Tómbola “Rasca y Gana”</h3>
+          <p>Este año tenemos algo especial para todos ustedes: ¡Rascas por solo 1€! Participa y gana increíbles premios: desde exclusivo merchandising de la feria 🍺 hasta consumiciones gratis para disfrutar de las mejores cervezas del mundo. No te quedes sin tu rasca, ¡cada uno es una oportunidad de ganar!</p>
+          <ul style="color:#c7c8cc">
+            <li>Un premio a elegir entre nuestra selección.</li>
+            <li>Una de nuestras cervezas de tercio o una tapa.</li>
+            <li>Un llavero – abridor de la feria de la cerveza.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🍺 Fianza de las jarras</h3>
+          <div class="list">
+            <div class="row"><span class="badge">Fianza</span><div>Las jarras de cristal tienen una fianza de <strong>X,XX€</strong>. Se trata de una fianza para su uso, no de una compra.</div></div>
+            <div class="row"><span class="badge">Ticket</span><div>Conserva el ticket morado hasta el final. Antes de marcharte, devuelve la jarra y el ticket y te devolvemos la fianza.</div></div>
+            <div class="row"><span class="badge">Norma</span><div><strong>Está prohibido salir del recinto con las jarras de cristal.</strong></div></div>
+          </div>
+        </div>
+      <div class="card">
+          <h3>📍 ¿Dónde se celebra?</h3>
+          <p class="lead" style="margin:6px 0 10px">Recinto ferial de Sanlúcar la Mayor</p>
+          <div class="map-embed" role="region" aria-label="Mapa del recinto ferial de Sanlúcar la Mayor">
+            <iframe
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://maps.google.com/maps?q=Recinto%20ferial%20de%20Sanl%C3%BAcar%20la%20Mayor&hl=es&z=17&output=embed">
+            </iframe>
+          </div></div>
+    
+        
+          <p style="margin-top:10px">
+            <a href="https://maps.app.goo.gl/fDsC8WLkdBz5zAGr9" target="_blank" rel="noopener noreferrer" class="tag">
+              Abrir en Google Maps
+            </a>
+          </p>
+        </div></section>
+
+    <div class="divider"></div>
+
+    <!-- CARTA 2025 -->
+    <section id="carta" style="margin:24px 0">
+      <h2 class="section-title">Carta 2025</h2>
+
+      <!-- CERVEZAS DE BOTELLA -->
+<article style="margin:10px 0 24px">
+  <h3 style="margin:0 0 8px">Cervezas de Botella</h3>
+  <div class="grid cols-2">
+
+    <div class="card">
+      <div class="beer">
+        <!-- Imagen a la izquierda -->
+        <img class="beer-photo" src="img/Desperados.svg" alt="Desperados" loading="lazy">
+        <!-- Texto a la derecha -->
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Desperados</h3>
+            <span class="price">X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Radler / Shandy</span><span>33cl</span><span>5,9% Vol.</span><span>Francia</span>
+          </div>
+          <p>Color dorado limpio y transparente, con espuma blanca poco abundante. Aroma suave a tequila con notas malteadas y afrutadas. Sabor suave y refrescante con fondo picante y cítrico. Final afrutado.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/Moretti.jpg" alt="Birra Moretti" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Birra Moretti</h3>
+            <span class="price">X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Lager</span><span>33cl</span><span>4,6% Vol.</span><span>Italia</span>
+          </div>
+          <p>Color dorado con espuma densa y persistente. Aroma a fruta fresca, florales y herbales que le otorgan los lúpulos. Sabor dulce a malta, pan y cereales.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/Sol.png" alt="Sol" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Sol</h3>
+            <span class="price">X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Lager</span><span>33cl</span><span>4,5% Vol.</span><span>México</span>
+          </div>
+          <p>Color amarillo con espuma de persistencia media. Aroma a malta y cereales. Sabor suave, equilibrado y fresco, de amargor bajo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/DosEquis.png" alt="Dos Equis" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Dos Equis</h3>
+            <span class="price">X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Lager</span><span>33cl</span><span>4,2% Vol.</span><span>México</span>
+          </div>
+          <p>Color dorado y brillante con espuma abundante. Aroma fino y limpio a trigo, cereales y levadura. Sabor suave a malta y cereales con un sutil toque amargo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/MortSubite.jpeg" alt="Mort Subite Kriek Lambic" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Mort Subite Kriek Lambic</h3>
+            <span class="price">X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Lambic</span><span>25cl</span><span>4% Vol.</span><span>Bélgica</span>
+          </div>
+          <p>Color rubí con espuma fina de persistencia media. Aroma frutal a cerezas. Sabor dulce con un ligero toque ácido y amargo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/Judas.jpg" alt="Judas" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Judas</h3>
+            <span class="price">X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Belgian Ale</span><span>33cl</span><span>8,5% Vol.</span><span>Bélgica</span>
+          </div>
+          <p>Color dorado oscuro y espuma blanca persistente con burbuja fina. Aroma frutal gracias al lúpulo, con notas a malta, lúpulo y hierbas. Sabor cálido, cítrico con fondo amargo equilibrado y un toque a cereal. Final alcohólico y dulce.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/Tostada00.jpg" alt="Gran Reserva 0.0 Tostada" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Gran Reserva 0.0 Tostada</h3>
+            <span class="price">X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Lager</span><span>33cl</span><span>0º Vol.</span><span>España</span>
+          </div>
+          <p>Color dorado con reflejos amarillos y espuma compacta. Aroma intenso con predominio de la malta y notas a cítricos y frutos secos. Sabor muy refrescante y equilibrado con un final largo a lúpulo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/SinGluten.jpg" alt="Cruzcampo Especial Sin Gluten" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Cruzcampo Especial Sin Gluten</h3>
+            <span class="price">X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Lager</span><span>33cl</span><span>5,6% Vol.</span><span>España</span>
+          </div>
+          <p>Color dorado pálido con espuma densa de persistencia media. Aroma frutal con notas a manzana madura. Sabor dulce y refrescante muy equilibrado con cuerpo ligero y final amargo.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+      <!-- CERVEZAS DE BARRIL -->
+<article style="margin:10px 0 26px">
+  <h3 style="margin:0 0 8px">Cervezas de Barril <span class="badge">Vaso de plástico / Jarra de cristal</span></h3>
+  <div class="grid cols-2">
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/PaulanerOktoberfest.jpeg" alt="Paulaner Oktoberfest Märzen" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Paulaner Oktoberfest Märzen</h3>
+            <span class="price">X,XX€ / X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Lager</span><span>50cl</span><span>6,0% Vol.</span><span>Alemania</span>
+          </div>
+          <p>Cerveza tradicional del Oktoberfest de Munich, con característico equilibrio entre una ligera nota de lúpulo y el marcado sabor de la malta. Festiva, sabrosa y maravillosamente ligera al paladar.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/PaulanerTrigo.jpg" alt="Paulaner Weissbier (Trigo)" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Paulaner Weissbier (Trigo)</h3>
+            <span class="price">X,XX€ / X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Helles</span><span>50cl</span><span>5,5% Vol.</span><span>Alemania</span>
+          </div>
+          <p>Aspecto turbio, con color dorado y espuma en tonos claros y muy abundante. Destacan los aromas a frutas, cereales y levaduras, con toques a cítricos. Al paladar posee sabor intenso a malta y frutas. Es equilibrada y refrescante, destacando su contraste entre los sabores dulces por la malta con los amargos por el lúpulo. Final amargo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/Affligem.png" alt="Affligem Dubbel" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Affligem Dubbel</h3>
+            <span class="price">X,XX€ / X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Dubbel</span><span>50cl</span><span>6,7% Vol.</span><span>Bélgica</span>
+          </div>
+          <p>Color caoba oscuro con espuma densa y cremosa. Aroma especiado con notas a malta. Sabor intenso y amargo con notas a especias y caramelo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/Maes.jpg" alt="Maes" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Maes</h3>
+            <span class="price">X,XX€ / X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Pilsner</span><span>50cl</span><span>5,0% Vol.</span><span>Bélgica</span>
+          </div>
+          <p>De color rubio pálido, espuma blanca y persistente. Suave al paladar. Sabor delicado, seco.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/Fosters.jpg" alt="Foster’s" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Foster’s</h3>
+            <span class="price">X,XX€ / X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Lager</span><span>50cl</span><span>5,0% Vol.</span><span>Australia</span>
+          </div>
+          <p>De color dorado brillante y espuma blanca consistente. Presenta aromas cítricos y sabor ligero pero muy bien balanceado entre el dulzor de la malta y el amargor suave herbáceo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/Guinness.jpg" alt="Guinness" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Guinness</h3>
+            <span class="price">X,XX€ / X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Stout</span><span>50cl</span><span>5,0% Vol.</span><span>Irlanda</span>
+          </div>
+          <p>Color oscuro y cuerpo robusto con una espuma densa, cremosa y persistente. Aroma muy equilibrado a malta tostada con un ligero toque frutal. Al paladar es suave con notas picantes de fondo, y un equilibrado sabor amargo y dulce a la vez.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/HopHouse.jpg" alt="Hop House" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Hop House</h3>
+            <span class="price">X,XX€ / X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Lager</span><span>50cl</span><span>5,0% Vol.</span><span>Irlanda</span>
+          </div>
+          <p>Color ámbar con reflejos dorados y espuma densa y abundante. Aroma lupulado con un toque cítrico y floral. Sabor refrescante, con mucho carácter, con notas a albaricoque y melocotón.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/Murphys.jpg" alt="Murphy’s" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Murphy’s</h3>
+            <span class="price">X,XX€ / X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Pale Ale</span><span>50cl</span><span>5,0% Vol.</span><span>Irlanda</span>
+          </div>
+          <p>Color rojizo con corona de espuma blanca poco abundante. Al paladar es ligera, muy agradable y refrescante. El primer sorbo es amargo, pero los siguientes son más suaves y dulces. Final a caramelo muy refrescante.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+      <!-- TINTO DE VERANO Y SIDRA -->
+<article style="margin:10px 0 26px">
+  <h3 style="margin:0 0 8px">Tinto de verano y sidra</h3>
+  <div class="grid cols-2">
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/LadronVerano.jpg" alt="Ladrón de Verano" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Ladrón de Verano</h3>
+            <span class="price">X,XX€ / X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Tinto de verano</span><span>Jarra con hielo</span>
+          </div>
+          <p>Tinto de verano con limón, servido en una jarra con hielo. Refrescante y ligero, ideal para estos días calurosos de verano.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="beer">
+        <img class="beer-photo" src="img/Strongbow.jpg" alt="Strongbow" loading="lazy">
+        <div class="beer-copy">
+          <div class="item">
+            <h3>Strongbow</h3>
+            <span class="price">X,XX€ / X,XX€</span>
+          </div>
+          <div class="meta">
+            <span>Sidra</span><span>Jarra con hielo</span>
+          </div>
+          <p>Sidra de manzana deliciosamente equilibrada y refrescante, una alternativa ligera y afrutada. También servida en una jarra con hielo.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+      <!-- TAPAS (después de las cervezas) -->
+      <article style="margin:10px 0 26px">
+        <h3 style="margin:0 0 8px">Tapas</h3>
+        <div class="card">
+          <div class="list">
+            <div class="row"><div>Salchicha roja</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Salchicha blanca</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Salchipapa</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Patatas bravas</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Montadito de lomo</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Montadito de pringá</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Nuggets de pollo</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Hamburguesa</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Taquitos de bacalao</div><div class="price">X,XX€</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- REFRESCOS -->
+      <article style="margin:10px 0 26px">
+        <h3 style="margin:0 0 8px">Agua, zumos y refrescos</h3>
+        <div class="card">
+          <div class="list">
+            <div class="row"><div>Botella de agua</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Pepsi Normal</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Pepsi Zero</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Kas Naranja</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Kas Limón</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Lipton Maracuya</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Zumo Melocotón</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Zumo Piña</div><div class="price">X,XX€</div></div>
+            <div class="row"><div>Snacks</div><div class="price">X,XX€</div></div>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <div class="divider"></div>
+
+          <h2 class="section-title" style="margin-bottom:8px">Contacto</h2>
+      <div class="social" aria-label="Redes sociales y contacto">
+        <a class="instagram" href="https://www.instagram.com/feriadelacervezasanlucar/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5" ry="5" stroke-width="2"/>
+            <circle cx="12" cy="12" r="4" stroke-width="2"/>
+            <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+        <a class="twitter" href="https://x.com/Feria_Cerveza" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke-width="2" stroke-linecap="round">
+            <path d="M4 4 L20 20"/>
+            <path d="M20 4 L4 20"/>
+          </svg>
+        </a>
+        <a class="facebook" href="https://www.facebook.com/feriadelacervezasanlucar/?locale=es_ES" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+            <rect x="3" y="3" width="18" height="18" rx="4" ry="4"></rect>
+            <path d="M14 8h-2c-1.1 0-2 .9-2 2v2H8v3h2v6h3v-6h2.5l.5-3H13v-1.2c0-.44.36-.8.8-.8H16V8h-2z"></path>
+          </svg>
+        </a>
+        <a class="email" href="mailto:info.feriacervezasanlucar@gmail.com" aria-label="Enviar correo">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+            <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
+            <path d="M3 7l9 6 9-6"></path>
+          </svg>
+        </a>
+      </div>
+
+
+    <div class="divider"></div>
+<div class="notice"><strong>Recordatorio:</strong> Prohibida la venta de alcohol a menores. Consume con responsabilidad.</div>
+      <p class="small" style="margin-top:10px">Organiza: Hermandad de la Soledad de Sanlúcar la Mayor · XI Edición de la Feria de la Cerveza Internacional (2025).</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container small">© <span id="year"></span> Feria de la Cerveza Internacional · Sanlúcar la Mayor</div>
+  </footer>
+  <script>document.getElementById('year').textContent=new Date().getFullYear()</script>
+<script>
+(function(){
+  // Cambia la extensión si tus imágenes no son .jpg (por ejemplo a .png o .webp)
+  const images = ["img/V1.jpeg","img/V2.jpeg","img/V3.jpeg","img/V4.jpeg","img/V45.jpeg","img/V5.jpeg","img/V65.jpeg","img/V6.jpeg","img/V7.jpeg"];
+
+  const root  = document.getElementById("recinto-carousel");
+  if(!root) return;
+  const track = root.querySelector(".c-track");
+  const prev  = root.querySelector(".c-btn.prev");
+  const next  = root.querySelector(".c-btn.next");
+  const dots  = root.querySelector(".c-dots");
+
+  // Pinta las diapositivas
+  track.innerHTML = images.map((src,i)=>
+    '<img class="c-slide" loading="lazy" alt="Recinto y público ' + (i+1) + '" src="' + src + '">'
+  ).join("");
+
+  // Dots
+  images.forEach((_,i)=>{
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label","Ir a foto " + (i+1));
+    b.addEventListener("click", ()=>goTo(i,true));
+    dots.appendChild(b);
+  });
+
+  let index = 0;
+  let timer = null;
+  let hovering = false;
+
+  function update(){
+    track.style.transform = "translateX(-" + (index*100) + "%)";
+    Array.from(dots.children).forEach((d, i)=> d.setAttribute("aria-current", i===index ? "true" : "false"));
+  }
+
+  function goTo(i, user=false){
+    index = (i + images.length) % images.length;
+    update();
+    if(user) restart();
+  }
+
+  function nextSlide(){ goTo(index+1); }
+  function prevSlide(){ goTo(index-1); }
+
+  function start(){
+    stop();
+    timer = setInterval(()=>{ if(!hovering) nextSlide(); }, 5000); // autoplay cada 5s
+  }
+  function stop(){
+    if(timer) clearInterval(timer);
+    timer = null;
+  }
+  function restart(){ start(); }
+
+  next.addEventListener("click", nextSlide);
+  prev.addEventListener("click", prevSlide);
+
+  root.addEventListener("mouseenter", ()=>{ hovering = true; });
+  root.addEventListener("mouseleave", ()=>{ hovering = false; });
+
+  // Pausa en pestaña inactiva
+  document.addEventListener("visibilitychange", ()=>{
+    if(document.hidden) stop(); else start();
+  });
+
+  // Init
+  update();
+  start();
+})();
+</script>
+
+<script>
+(function(){
+  const images = ["img/E1.jpeg","img/E2.jpeg","img/E3.jpeg","img/E4.jpeg","img/E5.jpeg","img/E6.jpeg","img/E7.jpeg"];
+  const root  = document.getElementById("evento-carousel");
+  if(!root) return;
+  const track = root.querySelector(".c-track");
+  const prev  = root.querySelector(".c-btn.prev");
+  const next  = root.querySelector(".c-btn.next");
+  const dots  = root.querySelector(".c-dots");
+
+  track.innerHTML = images.map((src,i)=>
+    '<img class="c-slide" loading="lazy" alt="Encabezado del evento ' + (i+1) + '" src="' + src + '">'
+  ).join("");
+
+  images.forEach((_,i)=>{
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label","Ir a foto " + (i+1));
+    b.addEventListener("click", ()=>goTo(i,true));
+    dots.appendChild(b);
+  });
+
+  let index = 0;
+  let timer = null;
+  let hovering = false;
+
+  function update(){
+    track.style.transform = "translateX(-" + (index*100) + "%)";
+    Array.from(dots.children).forEach((d, i)=> d.setAttribute("aria-current", i===index ? "true" : "false"));
+  }
+
+  function goTo(i, user=false){
+    index = (i + images.length) % images.length;
+    update();
+    if(user) restart();
+  }
+
+  function nextSlide(){ goTo(index+1); }
+  function prevSlide(){ goTo(index-1); }
+
+  function start(){
+    stop();
+    timer = setInterval(()=>{ if(!hovering) nextSlide(); }, 5000); // autoplay cada 5s
+  }
+  function stop(){
+    if(timer) clearInterval(timer);
+    timer = null;
+  }
+  function restart(){ start(); }
+
+  next.addEventListener("click", nextSlide);
+  prev.addEventListener("click", prevSlide);
+
+  root.addEventListener("mouseenter", ()=>{ hovering = true; });
+  root.addEventListener("mouseleave", ()=>{ hovering = false; });
+
+  document.addEventListener("visibilitychange", ()=>{
+    if(document.hidden) stop(); else start();
+  });
+
+  update();
+  start();
+})();
+</script>
+
+
+<script id="mobile-menu-script-v4">
+(function(){
+  try{
+    var nav = document.querySelector('.topbar nav.nav');
+    if(!nav) return;
+    var links = nav.querySelector(':scope > .nav');
+    if(!links) return;
+    if(!nav.querySelector('.hamburger')){
+      var btn = document.createElement('button');
+      btn.className = 'hamburger';
+      btn.setAttribute('type','button');
+      btn.setAttribute('aria-label','Abrir menú');
+      btn.setAttribute('aria-expanded','false');
+      btn.innerHTML = '<span class="bars" aria-hidden="true"></span>';
+      var brand = nav.querySelector('.brand');
+      if(brand && brand.nextElementSibling){ nav.insertBefore(btn, brand.nextElementSibling); }
+      else{ nav.appendChild(btn); }
+      btn.addEventListener('click', function(){
+        var open = nav.classList.toggle('menu-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      links.addEventListener('click', function(e){
+        if(e.target.closest('a')){
+          nav.classList.remove('menu-open');
+          btn.setAttribute('aria-expanded','false');
+        }
+      });
+      var mql = window.matchMedia('(min-width: 681px)');
+      mql.addEventListener('change', function(ev){
+        if(ev.matches){ nav.classList.remove('menu-open'); btn.setAttribute('aria-expanded','false'); }
+      });
+    }
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>
+
+
+
