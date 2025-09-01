@@ -33,6 +33,22 @@
     .item{display:flex;gap:12px}
     .list .row{display:flex;gap:12px;align-items:start;padding:12px;border-bottom:1px solid #24262a}
     .list .row:last-child{border-bottom:none}
+    /* Subcategorías dentro de listas (Tapas especiales) */
+    .list .subgroup{
+      margin:12px 0;
+      border:1px solid #2b2c30;
+      border-radius:12px;
+      background:linear-gradient(180deg,#17181b,#15161a);}
+    .list .subgroup .legend{
+      display:flex; align-items:center; gap:8px;
+      padding:8px 12px;
+      color:#e9e9ea; font-weight:700;}
+    .list .subgroup .legend .badge{
+      background:#23252a; border-color:#3a3b40; color:#ffd27d;}
+    .list .subgroup .row{
+      padding:10px 12px; border-bottom:1px solid #24262a;}
+    .list .subgroup .row:last-child{ border-bottom:none; }
+
     .badge{padding:2px 8px;border-radius:8px;background:#212226;border:1px solid #2b2c30;color:#a5a8b1;font-size:11px}
     .divider{height:1px;background:#25262a;margin:26px 0}
     .notice{padding:12px 14px;border:1px dashed #5b2b2b;border-radius:12px;background:linear-gradient(180deg,#1c1212,#1a1111);color:#ffbdbd}
@@ -633,13 +649,18 @@
           <div class="list">
             <div class="row"><div>Salchicha roja</div><div class="price">X,XX€</div></div>
             <div class="row"><div>Salchicha blanca</div><div class="price">X,XX€</div></div>
-            <div class="row"><div>Salchipapa</div><div class="price">X,XX€</div></div>
             <div class="row"><div>Patatas bravas</div><div class="price">X,XX€</div></div>
             <div class="row"><div>Montadito de lomo</div><div class="price">X,XX€</div></div>
             <div class="row"><div>Montadito de pringá</div><div class="price">X,XX€</div></div>
             <div class="row"><div>Nuggets de pollo</div><div class="price">X,XX€</div></div>
-            <div class="row"><div>Hamburguesa</div><div class="price">X,XX€</div></div>
-            <div class="row"><div>Taquitos de bacalao</div><div class="price">X,XX€</div></div>
+            <!-- Subcategoría destacada -->
+            <div class="subgroup">
+              <div class="legend"><span class="badge">⭐ Tapa especial</span></div>
+              <div class="row"><div>Taquitos de bacalao</div><div class="price">X,XX€</div></div>
+              <div class="row"><div>Salchipapa</div><div class="price">X,XX€</div></div>
+              <div class="row"><div>Hamburguesa</div><div class="price">X,XX€</div></div>
+            </div>
+            <!-- /Subcategoría destacada -->
           </div>
         </div>
       </article>
@@ -880,7 +901,6 @@
   }catch(e){}
 })();
 </script>
-
 </body>
 </html>
 
