@@ -284,8 +284,36 @@
     <!-- INFORMACIÓN ESPECIAL -->
     <section id="info" style="margin:24px 0">
       <h2 class="section-title">Información</h2>
-      <div class="img-slot">(Espacio para foto de la tómbola / detalle de mostrador)</div>
+      <!-- TARJETA A ANCHO COMPLETO: Formatos de cerveza -->
+      <div class="card">
+        <h3>🍻 Formatos de cerveza en la Feria</h3>
+        <div class="list">
+          <div class="row"><span class="badge">Tercios</span><div>Tercios de cerveza bien fríos (33 cl).</div></div>
+          <div class="row"><span class="badge">Jarras</span><div>Jarras de cerveza de cristal <strong>(sujetas a fianza)</strong>.</div></div>
+          <div class="row"><span class="badge">Cañón</span><div>Cañón en <strong>vaso reciclable</strong>: misma cantidad que las jarras, pero más sencillo, sin complicaciones ni fianza — tu vaso para ti.</div></div>
+        </div>
+      </div>
       <div class="grid cols-2">
+        <!-- 🎵 Actuaciones musicales -->
+        <div class="card">
+          <h3>🎵 Actuaciones musicales</h3>
+          <div class="carousel" id="musica-carousel" aria-label="Galería de actuaciones musicales">
+            <button class="c-btn prev" aria-label="Anterior">‹</button>
+            <div class="c-track"></div>
+            <button class="c-btn next" aria-label="Siguiente">›</button>
+            <div class="c-dots" aria-label="Indicadores"></div>
+          </div>
+          <div class="list" style="margin-top:10px">
+            <div class="row">
+              <span class="badge">Vie · 5 sep</span>
+              <div><strong>Banda Impresentable</strong> — <em>energía, buen rollo y muchas ganas</em>.</div>
+            </div>
+            <div class="row">
+              <span class="badge">Sáb · 6 sep</span>
+              <div><strong>FragglePop</strong> — <em>música, amor y color</em>.</div>
+            </div>
+          </div>
+        </div>
         <div class="card">
           <h3>🎟️ Tómbola “Rasca y Gana”</h3>
           <p>Este año volvemos con nuestra tómbola, estrenada en la pasada edición: ¡rascas por solo 1 €! Participa y gana premios increíbles: desde merchandising exclusivo de la feria 🍺 hasta consumiciones gratis para disfrutar de cervezas de todo el mundo. ¡No te quedes sin tu rasca; cada una es una oportunidad de ganar!</p>
@@ -655,7 +683,7 @@
             <div class="row"><div>Nuggets de pollo</div><div class="price">X,XX€</div></div>
             <!-- Subcategoría destacada -->
             <div class="subgroup">
-              <div class="legend"><span class="badge">⭐ Tapa especial</span></div>
+              <div class="legend"><span class="badge">⭐ Tapas especiales</span></div>
               <div class="row"><div>Taquitos de bacalao</div><div class="price">X,XX€</div></div>
               <div class="row"><div>Salchipapa</div><div class="price">X,XX€</div></div>
               <div class="row"><div>Hamburguesa</div><div class="price">X,XX€</div></div>
@@ -899,6 +927,61 @@
       });
     }
   }catch(e){}
+})();
+</script>
+<!-- Carrusel de actuaciones musicales -->
+<script>
+(function(){
+  // Sustituye por tus fotos reales
+  const images = [
+    "img/M1.jpeg",
+    "img/M2.jpeg",
+    "img/M3.jpeg",
+    "img/M4.jpeg"
+  ];
+
+  const root  = document.getElementById("musica-carousel");
+  if(!root) return;
+  const track = root.querySelector(".c-track");
+  const prev  = root.querySelector(".c-btn.prev");
+  const next  = root.querySelector(".c-btn.next");
+  const dots  = root.querySelector(".c-dots");
+
+  track.innerHTML = images.map((src,i)=>
+    '<img class="c-slide" loading="lazy" alt="Actuaciones musicales ' + (i+1) + '" src="' + src + '">'
+  ).join("");
+
+  images.forEach((_,i)=>{
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label","Ir a foto " + (i+1));
+    b.addEventListener("click", ()=>goTo(i,true));
+    dots.appendChild(b);
+  });
+
+  let index = 0;
+  let timer = null;
+  let hovering = false;
+
+  function update(){
+    track.style.transform = "translateX(-" + (index*100) + "%)";
+    Array.from(dots.children).forEach((d, i)=> d.setAttribute("aria-current", i===index ? "true" : "false"));
+  }
+  function goTo(i, user=false){ index = (i + images.length) % images.length; update(); if(user) restart(); }
+  function nextSlide(){ goTo(index+1); }
+  function prevSlide(){ goTo(index-1); }
+  function start(){ stop(); timer = setInterval(()=>{ if(!hovering) nextSlide(); }, 5000); }
+  function stop(){ if(timer) clearInterval(timer); timer = null; }
+  function restart(){ start(); }
+
+  next.addEventListener("click", nextSlide);
+  prev.addEventListener("click", prevSlide);
+  root.addEventListener("mouseenter", ()=>{ hovering = true; });
+  root.addEventListener("mouseleave", ()=>{ hovering = false; });
+  document.addEventListener("visibilitychange", ()=>{ if(document.hidden) stop(); else start(); });
+
+  update();
+  start();
 })();
 </script>
 </body>
